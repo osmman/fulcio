@@ -73,7 +73,8 @@ func createHTTPServer(ctx context.Context, serverEndpoint string, grpcServer, le
 		runtime.WithForwardResponseOption(setResponseCodeModifier),
 		runtime.WithHealthzEndpoint(health.NewHealthClient(cc)))
 
-	if err := gw.RegisterCAHandlerFromEndpoint(ctx, mux, grpcServer.grpcServerEndpoint, opts); err != nil {
+	grpcServerLo := fmt.Sprintf("localhost:%s", viper.GetString("grpc-port"))
+	if err := gw.RegisterCAHandlerFromEndpoint(ctx, mux, grpcServerLo, opts); err != nil {
 		log.Logger.Fatal(err)
 	}
 
